@@ -1,5 +1,7 @@
 __author__ = 'Amit'
 
+from exceptions import NotATileException
+
 
 class Board(object):
 
@@ -26,6 +28,7 @@ class Board(object):
         :param color: a character representing the color of the token, either 'w' or 'b'
         :return: Nothing
         """
-        if color!= 'w' or color!= 'b':
-            raise
+        if color != 'w' or color != 'b':
+            raise NotATileException("This is not an expected tile color")
+        
         self.board[x][y] = color
