@@ -1,7 +1,7 @@
 __author__ = 'Amit'
 
-from exceptions import NotATileException
-from exceptions import NotAValidMoveException
+from customexceptions import NotATileException
+from customexceptions import NotAValidMoveException
 import pprint as pp
 
 
