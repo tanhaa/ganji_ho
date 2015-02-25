@@ -16,6 +16,7 @@
 **/gen/
 bin/
 gen/
+*.pyc
 
 # Local configuration file (sdk path, etc)
 **/local.properties
@@ -55,3 +56,4 @@ build/
 
 # idea pycharm files
 *.iml
+
