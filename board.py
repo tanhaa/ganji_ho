@@ -49,16 +49,21 @@ class Board(object):
             raise NotATileException("This is not an expected tile color")
 
         # check if (x,y), (x+1,y), (x,y+1) is occupied
-        if self.board[x][y] is not 0:
-            raise NotAValidMoveException("This tile is occupied, not a valid move")
-        if color is 'w' and self.board[x+1][y] is not 0:
-            raise NotAValidMoveException("This tile is occupied, not a valid move")
-        else:
-            self.board[x][y] = color
-            self.board[x+1][y] = color
+        try:
+            if self.board[x][y] is not 0:
+                raise NotAValidMoveException("This tile is occupied, not a valid move")
 
-        if color is 'b' and self.board[x][y+1] is not 0:
-            raise NotAValidMoveException("This tile is occupied, not a valid move")
-        else:
-            self.board[x][y] = color
-            self.board[x][y+1] = color
+            if color is 'w' and self.board[x+1][y] is not 0:
+                raise NotAValidMoveException("This tile is occupied, not a valid move")
+            else:
+                self.board[x][y] = color
+                self.board[x+1][y] = color
+
+            if color is 'b' and self.board[x][y+1] is not 0:
+                raise NotAValidMoveException("This tile is occupied, not a valid move")
+            else:
+                self.board[x][y] = color
+                self.board[x][y+1] = color
+
+        except IndexError:
+            raise NotAValidMoveException("Given coordinates are out of the board")

@@ -7,3 +7,16 @@ class NotATileException(Exception):
 
 class NotAValidMoveException(Exception):
     pass
+
+
+class NotAValidSelectionException(Exception):
+    pass
+
+
+class NotAValidPlayerTypeException(Exception):
+    pass
+
+
+class NotAValidTokenColorException(Exception):
+    pass
+
