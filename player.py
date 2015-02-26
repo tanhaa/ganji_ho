@@ -5,24 +5,27 @@ from customexceptions import *
 
 class Player(object):
 
-    def __init__(self, player_type, color):
+    def __init__(self, player_type, token_color):
+        playertypes = ['human', 'computer']
+        tokencolors = ['white', 'black']
         try:
-            assert isinstance(player_type, int)
+            assert player_type.lower() in playertypes
             self.player_type = player_type
         except:
-            raise NotAValidPlayerTypeException("Player type must be 1 (human) or 2 (computer)")
+            raise NotAValidPlayerTypeException("Player type must be Human or Computer")
 
-        if color is not 'black' and color is not 'white':
-            raise NotAValidTokenColorException("Token color must be black or white")
-        else:
-            self.color = color
+        try:
+            assert token_color.lower() in tokencolors
+            self.token_color = token_color
+        except:
+            raise NotAValidTokenColorException("Token color must White or Black")
 
-        if color is 'white':
+        if self.token_color is tokencolors[0]:
             self.turn = True
         else:
             self.turn = False
 
-    def is_turn(self):
+    def is_next(self):
         """
         Returns a boolean indicating if it's the current player's turn or not
         :return: boolean
@@ -34,10 +37,6 @@ class Player(object):
         Returns tye type of player
         :return: string
         """
-
-        if self.type is 1:
-            return "Human"
-        if self.type is 2:
-            return "Computer"
+        return self.player_type
 
 

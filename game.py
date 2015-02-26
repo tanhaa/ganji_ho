@@ -8,7 +8,12 @@ class Game(object):
 
     def __init__(self, mode):
         if mode is 1:
-            self.player1 = Player(
+            self.player1 = Player('human', 'white')
+            self.player2 = Player('human', 'black')
+
+        if mode is 2:
+            self.player1 = Player('human', 'white')
+            self.player2 = Player('computer', 'black')
 
 
 if __name__ == '__main__':
