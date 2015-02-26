@@ -20,3 +20,6 @@ class NotAValidPlayerTypeException(Exception):
 class NotAValidTokenColorException(Exception):
     pass
 
+
+class NotAValidModeException(Exception):
+    pass
