@@ -4,9 +4,10 @@ from board import Board
 from customexceptions import *
 from player import Player
 
+
 class Game(object):
 
-    def __init__(self, mode):
+    def __init__(self, mode, board_size_x, board_size_y):
         if mode is 1:
             self.player1 = Player('human', 'white')
             self.player2 = Player('human', 'black')
@@ -14,6 +15,9 @@ class Game(object):
         if mode is 2:
             self.player1 = Player('human', 'white')
             self.player2 = Player('computer', 'black')
+
+        self.board = Board(board_size_x, board_size_y)
+
 
 
 if __name__ == '__main__':
@@ -34,6 +38,6 @@ if __name__ == '__main__':
     if selection is 2:
         raise NotImplementedError("This functionality has not been implemented yet")
 
-    # create the players
+
 
 
