@@ -27,21 +27,41 @@ class Game(object):
     def is_game_over(self):
         return False
 
+    def whose_turn(self):
+        return "Player1" if self.player1.is_next() else "Player2"
+
 if __name__ == '__main__':
     print("Select play mode:")
     print("1. Manual")
     print("2. Automatic")
 
-    selection = input("Please enter your selection: ")
+    try:
+        selected_mode = int(raw_input("Please enter your selection: "))
+        selections = [1, 2]
+        if selected_mode not in selections:
+            selected_mode = int(raw_input("You must enter a number (1 or 2) as your "
+                                      "selection, try again: "))
+        assert selected_mode in selections
+    except:
+        raise NotAValidSelectionException("You crashed the program!! You must "
+                                          "enter a number (1 or 2) as your selection")
+    if selected_mode is 2:
+        raise NotImplementedError("This functionality has not been implemented yet!")
 
     try:
-        selections = [1, 2]
-        assert selection in selections
+        board_rows = int(raw_input("Please enter the desired number of rows on the board: "))
+        board_columns = int(raw_input("Please enter the desired number of columns on the board: "))
     except:
-        raise NotAValidSelectionException("You must enter a number (1 or 2) as your selection")
+        raise ValueError("AW Crap! Stop entering non-integer values for the size of the"
+                         "board! you crashed the program!")
 
-    if selection is 2:
-        raise NotImplementedError("This functionality has not been implemented yet")
+    game = Game(selected_mode, board_rows, board_columns)
+
+    while not game.is_game_over():
+        print(game.board)
+        print("It's %s's turn" % game.whose_turn())
+        move = raw_input("%s, please enter the coordinates for your token placement: "
+                         "" % game.whose_turn())
 
 
 
