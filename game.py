@@ -42,15 +42,21 @@ class Game(object):
             raise NotAValidMoveException("There was an error parsing the coordinates")
 
         # place token on the board
-        self.board.place_token(row-1, column-1, self.whose_turn()[1].get_player_color())
+        try:
+            self.board.place_token(row-1, column-1, self.whose_turn()[1].get_player_color())
+        except:
+            pass
+
 
         # set the turn for next player
         if "1" in self.whose_turn()[0]:
             self.player2.set_next(True)
             self.player1.set_next(False)
+            # TODO: check if black will have an available move next or not
         else:
             self.player1.set_next(True)
             self.player2.set_next(False)
+            # TODO: check if white will have an available move next or not
 
     def is_move_valid(self, move):
         if len(move) is not 2:
