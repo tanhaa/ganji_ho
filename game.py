@@ -54,7 +54,7 @@ class Game(object):
                 self.turn = self.player1
             else:
                 self.is_game_over = True
-                self.winner = self.player1
+                self.winner = self.player2
 
     def is_move_valid(self, move):
         """
