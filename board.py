@@ -45,7 +45,7 @@ class Board(object):
         :param color: a character representing the color of the token, either 'w' or 'b'
         :return: Nothing
         """
-        if color is not 'w' and color is not 'b':
+        if color is not 'white' and color is not 'black':
             raise NotATileException("This is not an expected tile color")
 
         # check if (x,y), (x+1,y), (x,y+1) is occupied
@@ -53,17 +53,18 @@ class Board(object):
             if self.board[x][y] is not 0:
                 raise NotAValidMoveException("This tile is occupied, not a valid move")
 
-            if color is 'w' and self.board[x+1][y] is not 0:
-                raise NotAValidMoveException("This tile is occupied, not a valid move")
-            else:
-                self.board[x][y] = color
-                self.board[x+1][y] = color
+            if color is 'white':
+                if self.board[x+1][y] is not 0:
+                    raise NotAValidMoveException("This tile is occupied, not a valid move")
 
-            if color is 'b' and self.board[x][y+1] is not 0:
-                raise NotAValidMoveException("This tile is occupied, not a valid move")
-            else:
-                self.board[x][y] = color
-                self.board[x][y+1] = color
+                self.board[x][y] = color[0]
+                self.board[x+1][y] = color[0]
+
+            if color is 'black':
+                if self.board[x][y+1] is not 0:
+                    raise NotAValidMoveException("This tile is occupied, not a valid move")
+                self.board[x][y] = color[0]
+                self.board[x][y+1] = color[0]
 
         except IndexError:
             raise NotAValidMoveException("Given coordinates are out of the board")

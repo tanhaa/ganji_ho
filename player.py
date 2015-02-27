@@ -32,11 +32,26 @@ class Player(object):
         """
         return self.turn
 
+    def set_next(self, boolean):
+        """
+
+        :return:
+        """
+        self.turn = boolean
+
     def get_player_type(self):
         """
         Returns tye type of player
         :return: string
         """
         return self.player_type
+
+    def get_player_color(self):
+        """
+
+        :param selfself:
+        :return:
+        """
+        return self.token_color
 
 

@@ -28,7 +28,40 @@ class Game(object):
         return False
 
     def whose_turn(self):
-        return "Player1" if self.player1.is_next() else "Player2"
+        return ["Player1", self.player1] if self.player1.is_next() else ["Player2", self.player2]
+
+    def make_move(self, move):
+
+        if not self.is_move_valid(move):
+            raise NotAValidMoveException("The coordinates entered are not valid, they must be of the form A1")
+
+        try:
+            row = ord(move[0].lower()) - 96
+            column = int(move[1])
+        except:
+            raise NotAValidMoveException("There was an error parsing the coordinates")
+
+        # place token on the board
+        self.board.place_token(row-1, column-1, self.whose_turn()[1].get_player_color())
+
+        # set the turn for next player
+        if "1" in self.whose_turn()[0]:
+            self.player2.set_next(True)
+            self.player1.set_next(False)
+        else:
+            self.player1.set_next(True)
+            self.player2.set_next(False)
+
+    def is_move_valid(self, move):
+        if len(move) is not 2:
+            return False
+        if not move[0].isalpha():
+            return False
+        if not move[1].isdigit():
+            return False
+
+        return True
+        
 
 if __name__ == '__main__':
     print("Select play mode:")
@@ -59,12 +92,7 @@ if __name__ == '__main__':
 
     while not game.is_game_over():
         print(game.board)
-        print("It's %s's turn" % game.whose_turn())
+        print("It's %s's turn" % game.whose_turn()[0])
         move = raw_input("%s, please enter the coordinates for your token placement: "
-                         "" % game.whose_turn())
-
-
-
-
-
-
+                         "" % game.whose_turn()[0])
+        game.make_move(move)
