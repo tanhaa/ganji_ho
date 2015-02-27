@@ -15,26 +15,41 @@ class Game(object):
             raise NotAValidModeException("Please provide a correct mode: 1(manual) or 2(automatic)")
 
         if mode is 1:
-            self.player1 = Player('human', 'white')
-            self.player2 = Player('human', 'black')
+            self.player1 = Player(1, 'human', 'white')
+            self.player2 = Player(2, 'human', 'black')
             self.turn = self.player1
 
         # TODO: Randomize the player color selection for automatic mode
         # TODO: Assign whose_turn to the white player after randomizing
         if mode is 2:
-            self.player1 = Player('human', 'white')
-            self.player2 = Player('computer', 'black')
+            self.player1 = Player(1, 'human', 'white')
+            self.player2 = Player(2, 'computer', 'black')
 
         self.board = Board(board_size_x, board_size_y)
         self.is_game_over = False
         self.winner = None
 
     def post_move_processing(self, color):
+        """
+
+        :param color:
+        :return:
+        """
         return self.board.move_available(color)
 
-    def whose_turn(self):
-        return ["Player1", self.player1] if self.turn is self.player1\
-            else ["Player2", self.player2]
+    def is_move_valid(self, move):
+        """
+
+        :param move:
+        :return:
+        """
+        if len(move) is not 2:
+            return False
+        if not move[0].isalpha():
+            return False
+        if not move[1].isdigit():
+            return False
+        return True
 
     def make_move(self, move):
 
@@ -45,11 +60,11 @@ class Game(object):
             row = ord(move[0].lower()) - 96
             column = int(move[1])
         except:
-            raise NotAValidMoveException("There was an error parsing the coordinates")
+            raise NotAValidMoveException("There was an error parsing the move coordinates")
 
         # place token on the board
         try:
-            self.board.place_token(row-1, column-1, self.whose_turn()[1].get_player_color())
+            self.board.place_token(row-1, column-1, self.turn.get_player_color())
         except:
             # TODO so if an invalid move is made, an exception will be raised
             # if AI makes that error, it loses
@@ -57,24 +72,12 @@ class Game(object):
             pass
 
         # set the turn for next player
-        if "1" in self.whose_turn()[0]:
-            self.player2.set_next(True)
-            self.player1.set_next(False)
+        if self.player1 == self.turn:
+            self.turn = self.player2
             # TODO: check if black will have an available move next or not
         else:
-            self.player1.set_next(True)
-            self.player2.set_next(False)
+            self.turn = self.player1
             # TODO: check if white will have an available move next or not
-
-    def is_move_valid(self, move):
-        if len(move) is not 2:
-            return False
-        if not move[0].isalpha():
-            return False
-        if not move[1].isdigit():
-            return False
-
-        return True
         
 
 if __name__ == '__main__':
@@ -104,9 +107,9 @@ if __name__ == '__main__':
 
     game = Game(selected_mode, board_rows, board_columns)
 
-    while not game.is_game_over():
+    while not game.is_game_over:
         print(game.board)
-        print("It's %s's turn" % game.whose_turn()[0])
-        move = raw_input("%s, please enter the coordinates for your token placement: "
-                         "" % game.whose_turn()[0])
+        print("It's player%s's turn" % str(game.turn.id))
+        move = raw_input("player%s, please enter the coordinates for your token placement: "
+                         "" % str(game.turn.id))
         game.make_move(move)

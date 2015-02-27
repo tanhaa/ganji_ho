@@ -5,9 +5,17 @@ from customexceptions import *
 
 class Player(object):
 
-    def __init__(self, player_type, token_color):
+    def __init__(self, player_id, player_type, token_color):
         playertypes = ['human', 'computer']
         tokencolors = ['white', 'black']
+        player_ids = [1, 2]
+
+        try:
+            assert player_id in player_ids
+            self.id = player_id
+        except:
+            raise ValueError("Player ID must be an integer for 1 or 2")
+
         try:
             assert player_type.lower() in playertypes
             self.player_type = player_type
