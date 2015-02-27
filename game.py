@@ -17,18 +17,24 @@ class Game(object):
         if mode is 1:
             self.player1 = Player('human', 'white')
             self.player2 = Player('human', 'black')
+            self.turn = self.player1
 
+        # TODO: Randomize the player color selection for automatic mode
+        # TODO: Assign whose_turn to the white player after randomizing
         if mode is 2:
             self.player1 = Player('human', 'white')
             self.player2 = Player('computer', 'black')
 
         self.board = Board(board_size_x, board_size_y)
+        self.is_game_over = False
+        self.winner = None
 
-    def is_game_over(self):
-        return False
+    def post_move_processing(self, color):
+        return self.board.move_available(color)
 
     def whose_turn(self):
-        return ["Player1", self.player1] if self.player1.is_next() else ["Player2", self.player2]
+        return ["Player1", self.player1] if self.turn is self.player1\
+            else ["Player2", self.player2]
 
     def make_move(self, move):
 
@@ -45,8 +51,10 @@ class Game(object):
         try:
             self.board.place_token(row-1, column-1, self.whose_turn()[1].get_player_color())
         except:
+            # TODO so if an invalid move is made, an exception will be raised
+            # if AI makes that error, it loses
+            # if human makes it, it gets another chance to play, else it loses
             pass
-
 
         # set the turn for next player
         if "1" in self.whose_turn()[0]:

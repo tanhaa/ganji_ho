@@ -20,25 +20,6 @@ class Player(object):
         except:
             raise NotAValidTokenColorException("Token color must White or Black")
 
-        if self.token_color is tokencolors[0]:
-            self.turn = True
-        else:
-            self.turn = False
-
-    def is_next(self):
-        """
-        Returns a boolean indicating if it's the current player's turn or not
-        :return: boolean
-        """
-        return self.turn
-
-    def set_next(self, boolean):
-        """
-
-        :return:
-        """
-        self.turn = boolean
-
     def get_player_type(self):
         """
         Returns tye type of player
@@ -53,5 +34,3 @@ class Player(object):
         :return:
         """
         return self.token_color
-
-
