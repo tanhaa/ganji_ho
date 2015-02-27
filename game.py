@@ -8,6 +8,13 @@ from player import Player
 class Game(object):
 
     def __init__(self, mode, board_size_x, board_size_y):
+        """
+
+        :param mode:
+        :param board_size_x:
+        :param board_size_y:
+        :return:
+        """
         modes = [1, 2]
         try:
             assert mode in modes
@@ -29,13 +36,25 @@ class Game(object):
         self.is_game_over = False
         self.winner = None
 
-    def post_move_processing(self, color):
+    def post_move_processing(self):
         """
 
         :param color:
         :return:
         """
-        return self.board.move_available(color)
+        # check if there is a move available for next player
+        if self.player1 == self.turn:
+            if self.board.move_available(self.player2.get_player_color()):
+                self.turn = self.player2
+            else:
+                self.is_game_over = True
+                self.winner = self.player1
+        else:
+            if self.board.move_available(self.player1.get_player_color()):
+                self.turn = self.player1
+            else:
+                self.is_game_over = True
+                self.winner = self.player1
 
     def is_move_valid(self, move):
         """
@@ -52,6 +71,11 @@ class Game(object):
         return True
 
     def make_move(self, move):
+        """
+
+        :param move:
+        :return:
+        """
 
         if not self.is_move_valid(move):
             raise NotAValidMoveException("The coordinates entered are not valid, they must be of the form A1")
@@ -71,14 +95,8 @@ class Game(object):
             # if human makes it, it gets another chance to play, else it loses
             pass
 
-        # set the turn for next player
-        if self.player1 == self.turn:
-            self.turn = self.player2
-            # TODO: check if black will have an available move next or not
-        else:
-            self.turn = self.player1
-            # TODO: check if white will have an available move next or not
-        
+        # do post move processing, set turn and check win condition
+        self.post_move_processing()
 
 if __name__ == '__main__':
     print("Select play mode:")
@@ -113,3 +131,6 @@ if __name__ == '__main__':
         move = raw_input("player%s, please enter the coordinates for your token placement: "
                          "" % str(game.turn.id))
         game.make_move(move)
+
+    print("Game Over")
+    print("player%s won" % game.winner.id)
