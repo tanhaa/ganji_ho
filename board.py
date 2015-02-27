@@ -30,6 +30,36 @@ class Board(object):
         # ToDo: make a better represenation with headers for rows/columsn
         return pp.pformat(self.board)
 
+    def move_available(self, color):
+        """
+
+        :param color:
+        :return:
+        """
+        if color is "white":
+            # check if any rows have two consecutive vertical moves available
+            for n in range(len(self.board)):
+                for m in range(len(self.board[n])):
+                    if self.board[n][m] == 0:
+                        try:
+                            if self.board[n+1][m] == 0:
+                                return True
+                        except:
+                            continue
+        if color is "black":
+            # check if any column ha two consecutive horizontal moves available
+            for n in range(len(self.board)):
+                for m in range(len(self.board[n])):
+                    if self.board[n][m] == 0:
+                        try:
+                            if self.board[n][m+1] == 0:
+                                return True
+                        except:
+                            continue
+
+        return False
+
+
     def place_token(self, x, y, color):
         """
         Places two tokens on the board at the given (x,y) coordinates for the given color.
