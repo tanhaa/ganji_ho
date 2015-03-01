@@ -27,8 +27,17 @@ class Board(object):
 
         :return: String representing the board
         """
-        # ToDo: make a better represenation with headers for rows/columsn
-        return pp.pformat(self.board)
+        s = "    "
+        for n in range(len(self.board[0])):
+            s += " " + str(n+1) + " "
+        s += "\n"
+        for n in range(len(self.board)):
+            s += chr(n+65) + "  ["
+            for m in range(len(self.board[n])):
+                s += " " + str(self.board[n][m]) + " "
+            s += "]\n"
+
+        return s
 
     def move_available(self, color):
         """
