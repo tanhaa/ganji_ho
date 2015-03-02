@@ -132,5 +132,6 @@ if __name__ == '__main__':
                          "" % str(game.turn.id))
         game.make_move(move)
 
-    print("Game Over")
-    print("player%s won" % game.winner.id)
+    print(game.board)
+    print("***Game Over***")
+    print("Player%s Wins!" % game.winner.id)
