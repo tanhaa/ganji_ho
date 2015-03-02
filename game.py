@@ -93,6 +93,10 @@ class Game(object):
             # TODO so if an invalid move is made, an exception will be raised
             # if AI makes that error, it loses
             # if human makes it, it gets another chance to play, else it loses
+            # ----------------------------------------------------------------
+            # For iteration 1, if an error is made, turn is simply skipped
+            print("--Invalid move, forfeiting turn!--")
+            # ----------------------------------------------------------------
             pass
 
         # do post move processing, set turn and check win condition
