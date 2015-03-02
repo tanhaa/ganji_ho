@@ -1,4 +1,4 @@
-__author__ = 'Amit'
+__author__ = 'Amit & Abtin'
 
 from board import Board
 from customexceptions import *
