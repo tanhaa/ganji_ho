@@ -95,7 +95,7 @@ class Game(object):
             # if human makes it, it gets another chance to play, else it loses
             # ----------------------------------------------------------------
             # For iteration 1, if an error is made, turn is simply skipped
-            print("--Invalid move, forfeiting turn!--")
+            print("--Invalid token placement, forfeiting turn!--")
             # ----------------------------------------------------------------
             pass
 
