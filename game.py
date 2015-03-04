@@ -96,11 +96,12 @@ class Game(object):
             # ----------------------------------------------------------------
             # For iteration 1, if an error is made, turn is simply skipped
             print("--Invalid token placement, forfeiting turn!--")
+            return False
             # ----------------------------------------------------------------
-            pass
 
         # do post move processing, set turn and check win condition
         self.post_move_processing()
+        return True
 
 if __name__ == '__main__':
     print("Select play mode:")

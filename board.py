@@ -2,7 +2,6 @@ __author__ = 'Amit & Abtin'
 
 from customexceptions import NotATileException
 from customexceptions import NotAValidMoveException
-import pprint as pp
 
 
 class Board(object):
@@ -68,6 +67,25 @@ class Board(object):
 
         return False
 
+    def is_tile_occupied(self, x, y, color):
+        """
+
+        :param x:
+        :param y:
+        :param color:
+        :return:
+        """
+        try:
+            if self.board[x][y] is not 0:
+                raise NotAValidMoveException("This tile is occupied, not a valid move")
+            if color is 'white':
+                if self.board[x+1][y] is not 0:
+                    raise NotAValidMoveException("This tile is occupied, not a valid move")
+            if color is 'black':
+                if self.board[x][y+1] is not 0:
+                    raise NotAValidMoveException("This tile is occupied, not a valid move")
+        except IndexError:
+            raise NotAValidMoveException("Given coordinates are out of the board")
 
     def place_token(self, x, y, color):
         """
@@ -89,21 +107,12 @@ class Board(object):
 
         # check if (x,y), (x+1,y), (x,y+1) is occupied
         try:
-            if self.board[x][y] is not 0:
-                raise NotAValidMoveException("This tile is occupied, not a valid move")
-
+            self.is_tile_occupied(x, y, color)
             if color is 'white':
-                if self.board[x+1][y] is not 0:
-                    raise NotAValidMoveException("This tile is occupied, not a valid move")
-
                 self.board[x][y] = color[0]
                 self.board[x+1][y] = color[0]
-
             if color is 'black':
-                if self.board[x][y+1] is not 0:
-                    raise NotAValidMoveException("This tile is occupied, not a valid move")
                 self.board[x][y] = color[0]
                 self.board[x][y+1] = color[0]
-
-        except IndexError:
-            raise NotAValidMoveException("Given coordinates are out of the board")
+        except Exception as e:
+            raise NotAValidMoveException(e.message)
