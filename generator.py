@@ -34,7 +34,7 @@ class Generator(object):
 
         return list_of_boards
 
-    def create_tree(self, tree=None):
+    def create_tree(self, depth=1):
 
         # TODO: this color needs to be given to the generator class
         color = 'white'
@@ -48,9 +48,7 @@ class Generator(object):
             temp_b.board = copy.deepcopy(board)
             list_of_board_objects.append(temp_b)
 
-        # TODO: need a better tree class that can be appended the new
-        # things on the leaves ..
-        if tree is None:
-            tree = Node(self.board, list_of_board_objects)
+
+        tree = Node(self.board, list_of_board_objects)
 
         return tree

@@ -20,7 +20,7 @@ class Board(object):
             for m in range(y):
                 self.board[n].append(0)
 
-    def __str__(self):
+    def __repr__(self):
         """
         Override of __str__()
 

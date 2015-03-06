@@ -11,7 +11,7 @@ tree = Node("grandmother", [
     ]);
 
 print tree
-    'grandmother'
+'grandmother'
     'daughter'
         'granddaughter'
         'grandson'
@@ -32,4 +32,3 @@ class Node(object):
         for child in self.children:
             ret += child.__repr__(level+1)
         return ret
-
