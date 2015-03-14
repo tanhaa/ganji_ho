@@ -21,11 +21,14 @@ print tree
 
 """
 
-
 class Node(object):
-    def __init__(self, value, children=[]):
+    def __init__(self, depth, playerNum, board, value, children=[]):
         self.value = value
         self.children = children
+
+    def CreateChildren(self):
+        if self.depth >= 0:
+            for
 
     def __repr__(self, level=0):
         ret = "\t"*level+repr(self.value)+"\n"

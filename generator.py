@@ -43,6 +43,7 @@ class Generator(object):
         list_of_boards = self.generate(color)
         list_of_board_objects = []
 
+
         for board in list_of_boards:
             temp_b = Board(self.board_x, self.board_y)
             temp_b.board = copy.deepcopy(board)

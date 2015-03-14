@@ -8,11 +8,13 @@ class Board(object):
 
     def __init__(self, x, y):
         """
-        The board contains a board with x X y tiles.
+        The board contains a board with x X y tiles. x Represents the number of rows and y represents the number
+        of columns
 
         :param x: integer representing number of rows in the board
         :param y: integer representing number of columns in the board
         :return: object of the type board
+        :rtype: Board
         """
         self.board = []
         for n in range(x):
@@ -22,7 +24,7 @@ class Board(object):
 
     def __repr__(self):
         """
-        Override of __str__()
+        Override of __repr__()
 
         :return: String representing the board
         """
@@ -40,9 +42,13 @@ class Board(object):
 
     def move_available(self, color):
         """
+        This method checks if there is a move available for the player with the given color token.  For white players
+        it checks if there are any two consecutive vertical tiles free for a move. For black players, it checks if
+        there are any two horizontal tiles available and free for a move
 
-        :param color:
-        :return:
+        :param color: string "white" or "black" only
+        :return: True if move is availlable, False if not
+        :rtype: bool
         """
         if color is "white":
             # check if any rows have two consecutive vertical moves available
@@ -67,13 +73,15 @@ class Board(object):
 
         return False
 
-    def is_tile_occupied(self, x, y, color):
+    def _is_tile_occupied(self, x, y, color):
         """
+        Checks to see if the given tile at x and y (row and column) for the given color is available for a more or not.
+        It will also check the approprate second tile for the given color as well.  It does not return anything but if
+        the tile is occupied or if the given coordinates are out of the board, it will raise "NotAValidMoveException"
 
-        :param x:
-        :param y:
-        :param color:
-        :return:
+        :param x: row  (integer)
+        :param y: column (integer)
+        :param color: string "white" or "black"
         """
         try:
             if self.board[x][y] is not 0:
@@ -100,14 +108,13 @@ class Board(object):
         :param x: integer representing the row of the board
         :param y: integer representing the column of the board
         :param color: a character representing the color of the token, either 'w' or 'b'
-        :return: Nothing
         """
         if color is not 'white' and color is not 'black':
             raise NotATileException("This is not an expected tile color")
 
         # check if (x,y), (x+1,y), (x,y+1) is occupied
         try:
-            self.is_tile_occupied(x, y, color)
+            self._is_tile_occupied(x, y, color)
             if color is 'white':
                 self.board[x][y] = color[0]
                 self.board[x+1][y] = color[0]
