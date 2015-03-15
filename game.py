@@ -3,6 +3,8 @@ __author__ = 'Amit & Abtin'
 from board import Board
 from customexceptions import *
 from player import Player
+from tree import Node
+from tree import minmax2
 
 
 def is_move_valid(move):
@@ -46,14 +48,15 @@ class Game(object):
 
         if mode is 1:
             self.player1 = Player(1, 'human', 'white')
-            self.player2 = Player(-1, 'human', 'black')
+            self.player2 = Player(2, 'human', 'black')
             self.turn = self.player1
 
         # TODO: Randomize the player color selection for automatic mode
         # TODO: Assign whose_turn to the white player after randomizing
         if mode is 2:
             self.player1 = Player(1, 'human', 'white')
-            self.player2 = Player(-1, 'computer', 'black')
+            self.player2 = Player(2, 'computer', 'black')
+            self.turn = self.player1
 
         self.board = Board(board_size_x, board_size_y)
         self.is_game_over = False
@@ -131,11 +134,9 @@ if __name__ == '__main__':
     except:
         raise NotAValidSelectionException("You crashed the program!! You must "
                                           "enter a number (1 or 2) as your selection")
-    if selected_mode is 2:
-        raise NotImplementedError("This functionality has not been implemented yet!")
 
     # ========================#
-    # Get Play Mode           #
+    # Get Board Size          #
     # ========================#
     try:
         board_rows = int(raw_input("Please enter the desired number of rows on the board: "))
@@ -155,9 +156,21 @@ if __name__ == '__main__':
 
     while not game.is_game_over:
         print(game.board)
-        print("It's player%s's turn" % str(game.turn.id))
-        move = raw_input("player%s, please enter the coordinates for your token placement: "
-                         "" % str(game.turn.id))
+        if game.turn.get_player_type() is "human":
+            print("It's human player%s's (%s) turn" % (str(game.turn.id), str(game.turn.get_player_color())))
+            move = raw_input("player%s, please enter the coordinates for your token placement: "
+                             "" % str(game.turn.id))
+        else:
+            p1 = game.turn
+            p2 = game.player2 if game.turn == game.player1 else game.player1
+            print p1
+            print p2
+            tree = Node(None, 3, p1, p2, game.board, 0)
+            best_val = minmax2(tree, 3, p1, p2)
+            print best_val
+            move = raw_input("player%s, please enter the coordinates for your token placement: "
+                             "" % str(game.turn.id))
+
         game.make_move(move)
 
     # ========================#
@@ -165,4 +178,4 @@ if __name__ == '__main__':
     # ========================#
     print(game.board)
     print("***Game Over***")
-    print("Player%s Wins!" % game.winner.id)
+    print("%s Player%s (%s) Wins!" % (str(game.winner.get_player_type()), str(game.winner.id), game.winner.get_player_color()))

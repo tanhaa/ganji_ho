@@ -158,7 +158,10 @@ def minmax_black(node, depth, player, player2):
 def minmax(node, depth, player, player2):
     if depth == 0 or abs(node.value) == maxsize:
         print str(node.value) + " * " + str(player.id) + " for " + str(node.move)
-        return (node.value * player.id, [node.move])
+        sign_val = 1
+        if player.id is 2:
+            sign_val = -1
+        return (node.value * sign_val, [node.move])
 
     best_value = (-maxsize, None)
 

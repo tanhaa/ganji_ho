@@ -8,7 +8,7 @@ class Player(object):
     def __init__(self, player_id, player_type, token_color):
         playertypes = ['human', 'computer']
         tokencolors = ['white', 'black']
-        player_ids = [1, -1]
+        player_ids = [1, 2]
 
         try:
             assert player_id in player_ids
