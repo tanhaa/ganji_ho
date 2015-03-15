@@ -21,7 +21,7 @@ print tree
 
 """
 import copy
-
+from sys import maxsize
 
 def convert_to_alphamove(n, m):
     row_letter = chr(n+1+96)
@@ -32,6 +32,7 @@ def convert_to_alphamove(n, m):
 
 class Node(object):
     def __init__(self, move, depth, player1, player2, board, value):
+        self.best_move = ""
         self.move = move
         self.depth = depth
         self.player = player1
@@ -44,25 +45,30 @@ class Node(object):
     def create_children(self):
 
         if self.depth >= 0:
-            #generate the list of boards
+            # generate the list of boards
             list_of_boards = self.generate(self.player.get_player_color())
 
             list_of_moves = []
             for i in range(len(list_of_boards)):
-                list_of_moves.append(list_of_boards[i]["move"])
+                h_value = self.calculate_heuristic_value(list_of_boards[i]["board"])
+                s = list_of_boards[i]["move"] + " (" + str(h_value) + ")"
+                list_of_moves.append(s)
+            print self.depth
             print list_of_moves
 
             for i in range(len(list_of_boards)):
                 # print(list_of_boards)
-                v = self.value # change it with heuristic
                 sub_move = list_of_boards[i]["move"]
                 sub_board = list_of_boards[i]["board"]
-                print sub_move
-                print sub_board
+                v = self.calculate_heuristic_value(sub_board)
                 self.children.append(Node(sub_move, self.depth-1, self.player2, self.player, sub_board, v))
 
-    def calculate_heuristic_value(self):
-        pass
+    def calculate_heuristic_value(self, board):
+        if board.is_board_terminal():
+            return self.player.id * maxsize
+        else:
+            return board.num_moves_available('white') - board.num_moves_available('black')
+
 
     def generate(self, color):
         """
@@ -90,9 +96,34 @@ class Node(object):
         return list_of_boards
 
     def __repr__(self, level=0):
-        ret = "\t" * level + repr(self.move) + " " + repr(self.player) + " " + \
-              repr(self.player2) + " " + repr(self.value) + " " + \
-              + "\n" + repr(self.board) + "\n"
+        ret = "Move: " + str(self.move)
+        ret += "\nPlayer: " + str(self.player)
+        ret += "\nPlayer2: " + str(self.player2)
+        ret += "\nValue: " + str(self.value)
+        ret += "\n" + str(self.board)
+        moves = []
         for child in self.children:
-            ret += child.__repr__(level+1)
+            moves.append(child)
+
+        ret += "\n" + str(moves)
+
         return ret
+
+
+def minmax(node, depth, player, player2):
+    if depth == 0 or abs(node.value) == maxsize:
+        return (node.value * player.id, [node.move])
+
+    best_value = (-maxsize, None)
+
+    for child in node.children:
+        print "I'm in the loop for " + child.move
+        val = minmax(child, depth - 1, player2, player)
+        print "Found val " + str(val) + " for " + str(player.id)
+        if val[0] > best_value[0]:
+            val[1].append(node.move)
+            best_value = val
+            print "Changed bestValue to val above"
+
+    print "Returning bestValue " + str(best_value)
+    return best_value

@@ -24,6 +24,7 @@ class Board(object):
 
         self.__moves_available_white = self.__calculate_moves('white')
         self.__moves_available_black = self.__calculate_moves('black')
+        self.last_move_color = ""
 
 
     def __repr__(self):
@@ -95,6 +96,12 @@ class Board(object):
         else:
             return self.__moves_available_black >= 1
 
+    def is_board_terminal(self):
+        if self.last_move_color == 'white':
+            return self.__moves_available_black == 0
+        else:
+            return self.__moves_available_white == 0
+
     def _is_tile_occupied(self, x, y, color):
         """
         Checks to see if the given tile at x and y (row and column) for the given color is available for a more or not.
@@ -146,6 +153,7 @@ class Board(object):
 
             self.__moves_available_white = self.__calculate_moves('white')
             self.__moves_available_black = self.__calculate_moves('black')
+            self.last_move_color = color
 
         except Exception as e:
             raise NotAValidMoveException(e.message)
