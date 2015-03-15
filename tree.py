@@ -110,8 +110,54 @@ class Node(object):
         return ret
 
 
+def minmax2(node, depth, player, player2):
+    if player.get_player_color() == 'white':
+        val = minmax_white(node, depth, player, player2)
+    else:
+        val = minmax_black(node, depth, player, player2)
+
+    return val
+
+
+def minmax_white(node, depth, player, player2):
+    if depth == 0 or abs(node.value) == maxsize:
+        print str(node.value) + " * " + str(player.get_player_color()) + " for white " + str(node.move)
+        return (node.value, [node.move])
+    max_val = (-maxsize, [node.move])
+    for child in node.children:
+        print "I'm in the white loop for " + child.move
+        val = minmax_black(child, depth - 1, player2, player)
+        print "Found val " + str(val) + " for " + str(player.get_player_color())
+        if val[0] > max_val[0]:
+            val[1].append(node.move)
+            max_val = val
+            print "Changed bestValue to val above"
+
+    print "Returning bestValue " + str(max_val)
+    return max_val
+
+
+def minmax_black(node, depth, player, player2):
+    if depth == 0 or abs(node.value) == maxsize:
+        print str(node.value) + " * " + str(player.get_player_color()) + " for black " + str(node.move)
+        return (node.value, [node.move])
+    min_val = (maxsize, [node.move])
+    for child in node.children:
+        print "I'm in the black loop for " + child.move
+        val = minmax_white(child, depth - 1, player2, player)
+        print "Found val " + str(val) + " for " + str(player.get_player_color())
+        if val[0] < min_val[0]:
+            val[1].append(node.move)
+            min_val = val
+            print "Changed bestValue to val above"
+
+    print "Returning bestValue " + str(min_val)
+    return min_val
+
+
 def minmax(node, depth, player, player2):
     if depth == 0 or abs(node.value) == maxsize:
+        print str(node.value) + " * " + str(player.id) + " for " + str(node.move)
         return (node.value * player.id, [node.move])
 
     best_value = (-maxsize, None)
@@ -120,8 +166,9 @@ def minmax(node, depth, player, player2):
         print "I'm in the loop for " + child.move
         val = minmax(child, depth - 1, player2, player)
         print "Found val " + str(val) + " for " + str(player.id)
-        if val[0] > best_value[0]:
-            val[1].append(node.move)
+        if -val[0] > best_value[0]:
+            if val[1]:
+                val[1].append(node.move)
             best_value = val
             print "Changed bestValue to val above"
 
