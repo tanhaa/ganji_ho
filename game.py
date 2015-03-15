@@ -69,7 +69,7 @@ class Game(object):
         """
         # check if there is a move available for next player
         if self.player1 == self.turn:
-            if self.board.move_available(self.player2.get_player_color()):
+            if self.board.mo(self.player2.get_player_color()):
                 self.turn = self.player2
             else:
                 self.is_game_over = True

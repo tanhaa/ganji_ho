@@ -1,0 +1,12 @@
+title ganji_ho
+
+main->"game:Game": create_game(mode, rows, columns)
+"game:Game"->"p1:Player": create_player(id, type, "white")
+"game:Game"->"p2:Player": create_player(id, type, "black")
+"game:Game"->Board: create_board(x, y)
+"game:Game"-->main: game
+main->"game:Game": make_move(move)
+"game:Game"->"game:Game": is_valid_move(move)
+"game:Game" ->Board:place_token(move, turn.get_player_color())
+"game:Game" ->"game:Game":post_move_processing()
+"game:Game" --> main: true

@@ -42,3 +42,8 @@ class Player(object):
         :return:
         """
         return self.token_color
+
+    def __repr__(self):
+        ret = "Player: " + repr(self.id) + " " + repr(self.player_type) + \
+              " " + repr(self.token_color)
+        return ret

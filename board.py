@@ -22,6 +22,10 @@ class Board(object):
             for m in range(y):
                 self.board[n].append(0)
 
+        self.__moves_available_white = self.__calculate_moves('white')
+        self.__moves_available_black = self.__calculate_moves('black')
+
+
     def __repr__(self):
         """
         Override of __repr__()
@@ -40,16 +44,15 @@ class Board(object):
 
         return s
 
-    def move_available(self, color):
+    def __calculate_moves(self, color):
         """
-        This method checks if there is a move available for the player with the given color token.  For white players
-        it checks if there are any two consecutive vertical tiles free for a move. For black players, it checks if
-        there are any two horizontal tiles available and free for a move
-
+        This method calculates the number of moves available for the player with the given color token.
+        For white players it checks all the two consecutive vertical tiles free for a move.
+        For black players, it checks all the two horizontal tiles available and free for a move
         :param color: string "white" or "black" only
-        :return: True if move is availlable, False if not
-        :rtype: bool
         """
+        num_moves_available = 0
+
         if color is "white":
             # check if any rows have two consecutive vertical moves available
             for n in range(len(self.board)):
@@ -57,9 +60,10 @@ class Board(object):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n+1][m] == 0:
-                                return True
+                                num_moves_available += 1
                         except:
                             continue
+
         if color is "black":
             # check if any column ha two consecutive horizontal moves available
             for n in range(len(self.board)):
@@ -67,11 +71,29 @@ class Board(object):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n][m+1] == 0:
-                                return True
+                                num_moves_available += 1
                         except:
                             continue
 
-        return False
+        return num_moves_available
+
+    def num_moves_available(self, color):
+        if color is 'white':
+            return self.__moves_available_white
+        else:
+            return self.__moves_available_black
+
+    def move_available(self, color):
+        """
+        This method checks if there is a move available for the player with the given color token.
+        :param color: string 'black' or 'white'
+        :return: True or False
+        :rtype: bool
+        """
+        if color is "white":
+            return self.__moves_available_white >= 1
+        else:
+            return self.__moves_available_black >= 1
 
     def _is_tile_occupied(self, x, y, color):
         """
@@ -121,5 +143,9 @@ class Board(object):
             if color is 'black':
                 self.board[x][y] = color[0]
                 self.board[x][y+1] = color[0]
+
+            self.__moves_available_white = self.__calculate_moves('white')
+            self.__moves_available_black = self.__calculate_moves('black')
+
         except Exception as e:
             raise NotAValidMoveException(e.message)
