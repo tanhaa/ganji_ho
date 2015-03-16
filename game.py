@@ -165,8 +165,8 @@ if __name__ == '__main__':
             p2 = game.player2 if game.turn == game.player1 else game.player1
             print p1
             print p2
-            tree = Node(None, 3, p1, p2, game.board, 0)
-            best_val = minmax2(tree, 3, p1, p2)
+            tree = Node(None, 1, p1, p2, game.board, 0)
+            best_val = minmax2(tree, 1, p1, p2)
             print best_val
             move = raw_input("player%s, please enter the coordinates for your token placement: "
                              "" % str(game.turn.id))
