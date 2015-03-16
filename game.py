@@ -163,8 +163,8 @@ if __name__ == '__main__':
         else:
             p1 = game.turn
             p2 = game.player2 if game.turn == game.player1 else game.player1
-            print p1
-            print p2
+            # print p1
+            # print p2
             tree = Node(None, 1, p1, p2, game.board, 0)
             best_val = minmax2(tree, 1, p1, p2)
             print best_val

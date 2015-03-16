@@ -48,13 +48,14 @@ class Node(object):
             # generate the list of boards
             list_of_boards = self.generate(self.player.get_player_color())
 
-            list_of_moves = []
-            for i in range(len(list_of_boards)):
-                h_value = self.calculate_heuristic_value(list_of_boards[i]["board"])
-                s = list_of_boards[i]["move"] + " (" + str(h_value) + ")"
-                list_of_moves.append(s)
-            print self.depth
-            print list_of_moves
+            # ====Debug====
+            # list_of_moves = []
+            # for i in range(len(list_of_boards)):
+            #     h_value = self.calculate_heuristic_value(list_of_boards[i]["board"])
+            #     s = list_of_boards[i]["move"] + " (" + str(h_value) + ")"
+            #     list_of_moves.append(s)
+            # print self.depth
+            # print list_of_moves
 
             for i in range(len(list_of_boards)):
                 # print(list_of_boards)
@@ -65,10 +66,9 @@ class Node(object):
 
     def calculate_heuristic_value(self, board):
         if board.is_board_terminal():
-            return self.player.id * maxsize
+            return maxsize
         else:
             return board.num_moves_available('white') - board.num_moves_available('black')
-
 
     def generate(self, color):
         """
@@ -111,6 +111,14 @@ class Node(object):
 
 
 def minmax2(node, depth, player, player2):
+    """
+    Help source: http://www.hamedahmadi.com/gametree/
+    :param node:
+    :param depth:
+    :param player:
+    :param player2:
+    :return:
+    """
     if player.get_player_color() == 'white':
         val = minmax_white(node, depth, player, player2)
     else:
@@ -121,24 +129,24 @@ def minmax2(node, depth, player, player2):
 
 def minmax_white(node, depth, player, player2):
     if depth == 0 or abs(node.value) == maxsize:
-        print str(node.value) + " * " + str(player.get_player_color()) + " for white " + str(node.move)
+        # print str(node.value) + " * " + str(player.get_player_color()) + " for white " + str(node.move)
         return (node.value, [node.move])
     max_val = (-maxsize, [node.move])
-    print "Setting max_val to " + str(max_val)
+    # print "Setting max_val to " + str(max_val)
     for child in node.children:
-        print "I'm in the white loop for " + child.move
+        # print "I'm in the white loop for " + child.move
         val = minmax_black(child, depth - 1, player2, player)
-        print "Found val " + str(val) + " for " + str(player.get_player_color())
+        # print "Found val " + str(val) + " for " + str(player.get_player_color())
         if val[0] > max_val[0]:
             val[1].append(node.move)
             max_val = val
-            print "Changed bestValue to val above"
+            # print "Changed bestValue to val above"
         elif val[0] == max_val[0]: # this is we really have no moves that are good, pick the first one
             if len(max_val[1]) == 1:
                 if max_val[1][0] is None:
                     max_val[1].append(val[1][-1])
 
-    print "Returning bestValue " + str(max_val)
+    # print "Returning bestValue " + str(max_val)
     return max_val
 
 
@@ -147,22 +155,22 @@ def minmax_black(node, depth, player, player2):
         print str(node.value) + " * " + str(player.get_player_color()) + " for black " + str(node.move)
         return (node.value, [node.move])
     min_val = (maxsize, [node.move])
-    print "Setting min_val to " + str(min_val) + " " + str(len(min_val[1]))
+    # print "Setting min_val to " + str(min_val) + " " + str(len(min_val[1]))
     for child in node.children:
-        print "I'm in the black loop for " + child.move
+        # print "I'm in the black loop for " + child.move
         val = minmax_white(child, depth - 1, player2, player)
-        print "Found val " + str(val) + " for " + str(player.get_player_color())
+        # print "Found val " + str(val) + " for " + str(player.get_player_color())
         if val[0] < min_val[0]:
             val[1].append(node.move)
             min_val = val
-            print "Changed bestValue to val above"
+            # print "Changed bestValue to val above"
         elif val[0] == min_val[0]:
-            print str(min_val)
+            # print str(min_val)
             if len(min_val[1]) == 1:
                 if min_val[1][0] is None:
                     min_val[1].append(val[1][-1])
 
-    print "Returning bestValue " + str(min_val)
+    # print "Returning bestValue " + str(min_val)
     return min_val
 
 
@@ -177,14 +185,14 @@ def minmax(node, depth, player, player2):
     best_value = (-maxsize, None)
 
     for child in node.children:
-        print "I'm in the loop for " + child.move
+        # print "I'm in the loop for " + child.move
         val = minmax(child, depth - 1, player2, player)
-        print "Found val " + str(val) + " for " + str(player.id)
+        # print "Found val " + str(val) + " for " + str(player.id)
         if -val[0] > best_value[0]:
             if val[1]:
                 val[1].append(node.move)
             best_value = val
-            print "Changed bestValue to val above"
+            # print "Changed bestValue to val above"
 
-    print "Returning bestValue " + str(best_value)
+    # print "Returning bestValue " + str(best_value)
     return best_value
