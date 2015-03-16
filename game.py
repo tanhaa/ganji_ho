@@ -160,8 +160,8 @@ if __name__ == '__main__':
             # print p1
             # print p2
 
-            tree = Node(None, 1, p1, p2, game.board, 0)
-            best_val = minmax2(tree, 1, p1, p2)
+            tree = Node(None, 2, p1, p2, game.board, 0)
+            best_val = minmax2(tree, 2, p1, p2)
             if best_val[-1][-1] is None:
                 move = best_val[-1][-2]
             else:
