@@ -103,14 +103,8 @@ class Game(object):
         try:
             self.board.place_token(row-1, column-1, self.turn.get_player_color())
         except:
-            # TODO so if an invalid move is made, an exception will be raised
-            # if AI makes that error, it loses
-            # if human makes it, it gets another chance to play, else it loses
-            # ----------------------------------------------------------------
-            # For iteration 1, if an error is made, turn is simply skipped
-            print("--Invalid token placement, forfeiting turn!--")
+            print("--Invalid token placement!--")
             return False
-            # ----------------------------------------------------------------
 
         # do post move processing, set turn and check win condition
         self._post_move_processing()
@@ -165,13 +159,29 @@ if __name__ == '__main__':
             p2 = game.player2 if game.turn == game.player1 else game.player1
             # print p1
             # print p2
+
             tree = Node(None, 1, p1, p2, game.board, 0)
             best_val = minmax2(tree, 1, p1, p2)
-            print best_val
-            move = raw_input("player%s, please enter the coordinates for your token placement: "
-                             "" % str(game.turn.id))
+            if best_val[-1][-1] is None:
+                move = best_val[-1][-2]
+            else:
+                move = best_val[-1][-1]
+            # print best_val
+            print "Computer places its tokens on " + move
+            # move = raw_input("player%s, please enter the coordinates for your token placement: "
+            #                  "" % str(game.turn.id))
 
-        game.make_move(move)
+        if not game.make_move(move):
+            if game.turn.get_player_type() is "computer":
+                print "Computer made an error! It loses."
+            else:
+                print "Move error, you get only one more chance to make a correct move"
+                move = raw_input("player%s, please enter the coordinates for your token placement: "
+                                 "" % str(game.turn.id))
+                if not game.make_move(move):
+                    print "You made another error, too bad you lose!"
+                    game.is_game_over = True
+                    game.winner = game.player2 if game.turn == game.player1 else game.player1
 
     # ========================#
     # End Game                #
