@@ -162,8 +162,8 @@ if __name__ == '__main__':
             # print p1
             # print p2
 
-            tree = Node(None, 1, p1, p2, game.board, 0)
-            best_val = minmax2(tree, 1, p1, p2)
+            tree = Node(None, 2, p1, p2, game.board, 0)
+            best_val = minmax2(tree, 2, p1, p2)
 
             if best_val[-1][-1] is None:
                 move = best_val[-1][-2]
@@ -175,6 +175,8 @@ if __name__ == '__main__':
         if not game.make_move(move):
             if game.turn.get_player_type() is "computer":
                 print "Computer made an error! It loses."
+                game.is_game_over = True
+                game.winner = game.player2 if game.turn == game.player1 else game.player1
             else:
                 print "Move error, you get only one more chance to make a correct move"
                 move = raw_input("player%s, please enter the coordinates for your token placement: "

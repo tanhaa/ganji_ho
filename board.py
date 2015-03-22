@@ -16,12 +16,10 @@ class Board(object):
         :return: object of the type board
         :rtype: Board
         """
+        self.x = x
+        self.y = y
         self.board = []
-        for n in range(x):
-            self.board.append([])
-            for m in range(y):
-                self.board[n].append(0)
-
+        self.reset_board()
         self.__moves_available_white = self.__calculate_moves('white')
         self.__moves_available_black = self.__calculate_moves('black')
         self.last_move_color = ""
@@ -44,6 +42,13 @@ class Board(object):
             s += "]\n"
 
         return s
+
+    def reset_board(self):
+        self.board = []
+        for n in range(self.x):
+            self.board.append([])
+            for m in range(self.y):
+                self.board[n].append(0)
 
     def __calculate_moves(self, color):
         """
@@ -157,3 +162,33 @@ class Board(object):
 
         except Exception as e:
             raise NotAValidMoveException(e.message)
+
+    def revert_move(self, x, y, color):
+        try:
+            self._is_tile_occupied(x, y, color)
+        except NotAValidMoveException as e:
+            if color is 'white':
+                self.board[x][y] = 0
+                self.board[x+1][y] = 0
+            if color is 'black':
+                self.board[x][y] = 0
+                self.board[x][y+1] = 0
+
+            self.__moves_available_white = self.__calculate_moves('white')
+            self.__moves_available_black = self.__calculate_moves('black')
+            self.last_move_color = color
+
+    def get_board_copy(self):
+        b = []
+        for n in range(len(self.board)):
+            b.append(list(self.board[n]))
+        return b
+
+    def __deepcopy__(self, memo):
+        b = Board(self.x, self.y)
+        b.board = []
+        b.board = [row[:] for row in self.board]
+        b.__moves_available_white = self.__moves_available_white
+        b.__moves_available_black = self.__moves_available_black
+        b.last_move_color = self.last_move_color
+        return b

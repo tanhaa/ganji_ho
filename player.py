@@ -28,6 +28,9 @@ class Player(object):
         except:
             raise NotAValidTokenColorException("Token color must White or Black")
 
+    def __copy__(self):
+        return Player(self.id, self.player_type, self.token_color)
+
     def get_player_type(self):
         """
         Returns tye type of player
