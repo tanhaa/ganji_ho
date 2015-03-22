@@ -66,7 +66,7 @@ class Node(object):
 
     def calculate_heuristic_value(self, board):
         if board.is_board_terminal():
-            return maxsize
+            return maxsize if self.player.get_player_color() == 'white' else -maxsize
         else:
             return board.num_moves_available('white') - board.num_moves_available('black')
 
@@ -112,12 +112,13 @@ class Node(object):
 
 def minmax2(node, depth, player, player2):
     """
+    This method will call the appropriate minmax method depending on the color of the player.
     Help source: http://www.hamedahmadi.com/gametree/
-    :param node:
-    :param depth:
-    :param player:
-    :param player2:
-    :return:
+    :param node: Tree, type Node
+    :param depth: how deep do we want to go? Integer, 0 = root only.
+    :param player: Player whose move it is
+    :param player2: The other player.
+    :return: a tuple with the heuristic value at index 0 and list of moves at index 1
     """
     if player.get_player_color() == 'white':
         val = minmax_white(node, depth, player, player2)
@@ -128,6 +129,14 @@ def minmax2(node, depth, player, player2):
 
 
 def minmax_white(node, depth, player, player2):
+    """
+
+    :param node:
+    :param depth:
+    :param player:
+    :param player2:
+    :return:
+    """
     if depth == 0 or abs(node.value) == maxsize:
         # print str(node.value) + " * " + str(player.get_player_color()) + " for white " + str(node.move)
         return (node.value, [node.move])
@@ -141,18 +150,26 @@ def minmax_white(node, depth, player, player2):
             val[1].append(node.move)
             max_val = val
             # print "Changed bestValue to val above"
-        elif val[0] == max_val[0]: # this is we really have no moves that are good, pick the first one
-            if len(max_val[1]) == 1:
-                if max_val[1][0] is None:
-                    max_val[1].append(val[1][-1])
+        # elif val[0] == max_val[0]: # this is we really have no moves that are good, pick the first one
+        #     if len(max_val[1]) == 1:
+        #         if max_val[1][0] is None:
+        #             max_val[1].append(val[1][-1])
 
     # print "Returning bestValue " + str(max_val)
     return max_val
 
 
 def minmax_black(node, depth, player, player2):
+    """
+
+    :param node:
+    :param depth:
+    :param player:
+    :param player2:
+    :return:
+    """
     if depth == 0 or abs(node.value) == maxsize:
-        print str(node.value) + " * " + str(player.get_player_color()) + " for black " + str(node.move)
+        # print str(node.value) + " * " + str(player.get_player_color()) + " for black " + str(node.move)
         return (node.value, [node.move])
     min_val = (maxsize, [node.move])
     # print "Setting min_val to " + str(min_val) + " " + str(len(min_val[1]))
@@ -164,11 +181,11 @@ def minmax_black(node, depth, player, player2):
             val[1].append(node.move)
             min_val = val
             # print "Changed bestValue to val above"
-        elif val[0] == min_val[0]:
-            # print str(min_val)
-            if len(min_val[1]) == 1:
-                if min_val[1][0] is None:
-                    min_val[1].append(val[1][-1])
+        # elif val[0] == min_val[0]:
+        #     # print str(min_val)
+        #     if len(min_val[1]) == 1:
+        #         if min_val[1][0] is None:
+        #             min_val[1].append(val[1][-1])
 
     # print "Returning bestValue " + str(min_val)
     return min_val

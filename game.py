@@ -91,13 +91,15 @@ class Game(object):
         """
 
         if not is_move_valid(move):
-            raise NotAValidMoveException("The coordinates entered are not valid, they must be of the form A1")
+            print ("The coordinates entered are not valid, they must be of the form A1")
+            return False
 
         try:
             row = ord(move[0].lower()) - 96
             column = int(move[1])
         except:
-            raise NotAValidMoveException("There was an error parsing the move coordinates")
+            print ("There was an error parsing the move coordinates")
+            return False
 
         # place token on the board
         try:
@@ -162,11 +164,10 @@ if __name__ == '__main__':
 
             tree = Node(None, 1, p1, p2, game.board, 0)
             best_val = minmax2(tree, 1, p1, p2)
+
             if best_val[-1][-1] is None:
                 move = best_val[-1][-2]
-            else:
-                move = best_val[-1][-1]
-            # print best_val
+            print best_val
             print "Computer places its tokens on " + move
             # move = raw_input("player%s, please enter the coordinates for your token placement: "
             #                  "" % str(game.turn.id))
