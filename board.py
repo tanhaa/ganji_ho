@@ -20,8 +20,8 @@ class Board(object):
         self.y = y
         self.board = []
         self.reset_board()
-        self.__moves_available_white = self.__calculate_moves('white')
-        self.__moves_available_black = self.__calculate_moves('black')
+        # self.__moves_available_white = self.__calculate_moves('white')
+        # self.__moves_available_black = self.__calculate_moves('black')
         self.last_move_color = ""
 
 
@@ -44,11 +44,7 @@ class Board(object):
         return s
 
     def reset_board(self):
-        self.board = []
-        for n in range(self.x):
-            self.board.append([])
-            for m in range(self.y):
-                self.board[n].append(0)
+        return [[0 for n in range(self.x)] for m in range(self.y)]
 
     def __calculate_moves(self, color):
         """
