@@ -79,23 +79,20 @@ class Node(object):
         """
         # deep copy the board object.
         temp_board = copy.deepcopy(self.board)
-        initial_state = [row[:] for row in temp_board.board]
-        # initial_state = copy.deepcopy(temp_board.board)
+        initial_state = []
+        initial_state.extend(temp_board.board)
         list_of_boards = []
-        for n in range(len(temp_board.board)):
-            for m in range(len(temp_board.board[0])):
-                # temp_board.board = copy.deepcopy(initial_state)
-                temp_board.board = [row[:] for row in initial_state]
+        for n in range(temp_board.x):
+            for m in range(temp_board.y):
+                temp_board.board = initial_state[:]
                 try:
                     temp_board.place_token(n, m, color)
                     move = convert_to_alphamove(n, m)
                     list_of_boards.append({"move": move, "board": copy.deepcopy(temp_board)})
-
                 except:
                     if not temp_board.move_available(color):
                         break
                     continue
-
         return list_of_boards
 
     def __repr__(self, level=0):
