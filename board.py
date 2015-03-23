@@ -29,19 +29,19 @@ class Board(object):
         :return: String representing the board
         """
         s = "    "
-        for n in range(len(self.board[0])):
+        for n in range(self.y):
             s += " " + str(n+1) + " "
         s += "\n"
-        for n in range(len(self.board)):
+        for n in range(self.x):
             s += chr(n+65) + "  ["
-            for m in range(len(self.board[n])):
-                s += " " + str(self.board[n][m]) + " "
+            for m in range(self.y):
+                s += " " + str(self.board[(n * self.x) + m]) + " "
             s += "]\n"
 
         return s
 
     def reset_board(self):
-        self.board = [[0 for n in range(self.x)] for m in range(self.y)]
+        self.board = [0] * (self.x * self.y)
 
     def __calculate_moves(self, color):
         """
@@ -54,22 +54,22 @@ class Board(object):
 
         if color is "white":
             # check if any rows have two consecutive vertical moves available
-            for n in range(len(self.board)-1):
-                for m in range(len(self.board[n])):
-                    if self.board[n][m] == 0:
+            for n in range(self.x):
+                for m in range(self.y):
+                    if self.board[(n * self.x) + m] == 0:
                         try:
-                            if self.board[n+1][m] == 0:
+                            if self.board[((n+1) * self.x) + m] == 0:
                                 num_moves_available += 1
                         except:
                             continue
 
         if color is "black":
             # check if any column ha two consecutive horizontal moves available
-            for n in range(len(self.board)):
-                for m in range(len(self.board[n])-1):
-                    if self.board[n][m] == 0:
+            for n in range(self.x):
+                for m in range(self.y):
+                    if self.board[(n * self.x) + m] == 0:
                         try:
-                            if self.board[n][m+1] == 0:
+                            if self.board[(n * self.x) + (m+1)] == 0:
                                 num_moves_available += 1
                         except:
                             continue
@@ -90,20 +90,20 @@ class Board(object):
         :rtype: bool
         """
         if color is "white":
-            for n in range(len(self.board)):
-                for m in range(len(self.board[n])):
-                    if self.board[n][m] == 0:
+            for n in range(self.x):
+                for m in range(self.y):
+                    if self.board[(n * self.x) + m] == 0:
                         try:
-                            if self.board[n+1][m] == 0:
+                            if self.board[((n+1) * self.x) + m] == 0:
                                 return True
                         except:
                             continue
         else:
-            for n in range(len(self.board)):
-                for m in range(len(self.board[n])):
-                    if self.board[n][m] == 0:
+            for n in range(self.x):
+                for m in range(self.y):
+                    if self.board[(n * self.x) + m] == 0:
                         try:
-                            if self.board[n][m+1] == 0:
+                            if self.board[(n * self.x) + (m+1)] == 0:
                                 return True
                         except:
                             continue
@@ -127,13 +127,13 @@ class Board(object):
         :param color: string "white" or "black"
         """
         try:
-            if self.board[x][y] is not 0:
+            if self.board[(x * self.x) + y] is not 0:
                 raise NotAValidMoveException("This tile is occupied, not a valid move")
             if color is 'white':
-                if self.board[x+1][y] is not 0:
+                if self.board[((x + 1) * self.x) + y] is not 0:
                     raise NotAValidMoveException("This tile is occupied, not a valid move")
             if color is 'black':
-                if self.board[x][y+1] is not 0:
+                if self.board[(x * self.x) + (y + 1)] is not 0:
                     raise NotAValidMoveException("This tile is occupied, not a valid move")
         except IndexError:
             raise NotAValidMoveException("Given coordinates are out of the board")
@@ -159,11 +159,11 @@ class Board(object):
         try:
             self._is_tile_occupied(x, y, color)
             if color is 'white':
-                self.board[x][y] = color[0]
-                self.board[x+1][y] = color[0]
+                self.board[(x * self.x) + y] = color[0]
+                self.board[((x + 1) * self.x) + y] = color[0]
             if color is 'black':
-                self.board[x][y] = color[0]
-                self.board[x][y+1] = color[0]
+                self.board[(x * self.x) + y] = color[0]
+                self.board[(x * self.x) + (y + 1)] = color[0]
 
             self.last_move_color = color
 
@@ -173,6 +173,6 @@ class Board(object):
     def __deepcopy__(self, memo):
         b = Board(self.x, self.y)
         b.board = []
-        b.board = [row[:] for row in self.board]
+        b.board = self.board[:]
         b.last_move_color = self.last_move_color
         return b
