@@ -54,7 +54,7 @@ class Board(object):
 
         if color is "white":
             # check if any rows have two consecutive vertical moves available
-            for n in range(self.x):
+            for n in range(self.x - 1):
                 for m in range(self.y):
                     if self.board[(n * self.x) + m] == 0:
                         try:
@@ -66,10 +66,10 @@ class Board(object):
         if color is "black":
             # check if any column ha two consecutive horizontal moves available
             for n in range(self.x):
-                for m in range(self.y):
-                    if self.board[(n * self.x) + m] == 0:
+                for m in range(self.y - 1):
+                    if self.board[(n * self.y) + m] == 0:
                         try:
-                            if self.board[(n * self.x) + (m+1)] == 0:
+                            if self.board[(n * self.y) + (m+1)] == 0:
                                 num_moves_available += 1
                         except:
                             continue
@@ -90,7 +90,7 @@ class Board(object):
         :rtype: bool
         """
         if color is "white":
-            for n in range(self.x):
+            for n in range(self.x - 1):
                 for m in range(self.y):
                     if self.board[(n * self.x) + m] == 0:
                         try:
@@ -100,10 +100,10 @@ class Board(object):
                             continue
         else:
             for n in range(self.x):
-                for m in range(self.y):
-                    if self.board[(n * self.x) + m] == 0:
+                for m in range(self.y - 1):
+                    if self.board[(n * self.y) + m] == 0:
                         try:
-                            if self.board[(n * self.x) + (m+1)] == 0:
+                            if self.board[(n * self.y) + (m+1)] == 0:
                                 return True
                         except:
                             continue

@@ -82,16 +82,30 @@ class Node(object):
         initial_state = []
         initial_state.extend(temp_board.board)
         list_of_boards = []
-        for n in range(temp_board.x):
-            for m in range(temp_board.y):
-                temp_board.board = initial_state[:]
-                try:
-                    temp_board.place_token(n, m, color)
-                    move = convert_to_alphamove(n, m)
-                    list_of_boards.append({"move": move, "board": copy.deepcopy(temp_board)})
-                except:
-                    if not temp_board.move_available(color):
-                        break
+
+        if color is 'white':
+            for n in range(temp_board.x - 1):
+                for m in range(temp_board.y):
+                    temp_board.board = initial_state[:]
+                    try:
+                        temp_board.place_token(n, m, color)
+                        move = convert_to_alphamove(n, m)
+                        list_of_boards.append({"move": move, "board": copy.deepcopy(temp_board)})
+                    except:
+                        if not temp_board.move_available(color):
+                            break
+                    continue
+        else:
+            for n in range(temp_board.x):
+                for m in range(temp_board.y - 1):
+                    temp_board.board = initial_state[:]
+                    try:
+                        temp_board.place_token(n, m, color)
+                        move = convert_to_alphamove(n, m)
+                        list_of_boards.append({"move": move, "board": copy.deepcopy(temp_board)})
+                    except:
+                        if not temp_board.move_available(color):
+                            break
                     continue
         return list_of_boards
 
