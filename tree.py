@@ -47,7 +47,6 @@ class Node(object):
         if self.depth >= 0:
             # generate the list of boards
             list_of_boards = self.generate(self.player.get_player_color())
-
             # ====Debug====
             # list_of_moves = []
             # for i in range(len(list_of_boards)):

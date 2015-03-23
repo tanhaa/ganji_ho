@@ -42,7 +42,6 @@ class Board(object):
 
     def reset_board(self):
         self.board = [[0 for n in range(self.x)] for m in range(self.y)]
-        return self.board
 
     def __calculate_moves(self, color):
         """
@@ -113,9 +112,9 @@ class Board(object):
 
     def is_board_terminal(self):
         if self.last_move_color == 'white':
-            return self.move_available('black')
+            return not self.move_available('black')
         else:
-            return self.move_available('white')
+            return not self.move_available('white')
 
     def _is_tile_occupied(self, x, y, color):
         """
