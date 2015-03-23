@@ -41,7 +41,7 @@ class Board(object):
         return s
 
     def reset_board(self):
-        self.board = [[0 for n in range(self.x)] for m in range(self.y)]
+        self.board = [[0] * self.x] * self.y
 
     def __calculate_moves(self, color):
         """
