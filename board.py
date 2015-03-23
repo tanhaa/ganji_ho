@@ -54,7 +54,7 @@ class Board(object):
 
         if color is "white":
             # check if any rows have two consecutive vertical moves available
-            for n in range(len(self.board)):
+            for n in range(len(self.board)-1):
                 for m in range(len(self.board[n])):
                     if self.board[n][m] == 0:
                         try:
@@ -66,7 +66,7 @@ class Board(object):
         if color is "black":
             # check if any column ha two consecutive horizontal moves available
             for n in range(len(self.board)):
-                for m in range(len(self.board[n])):
+                for m in range(len(self.board[n])-1):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n][m+1] == 0:
