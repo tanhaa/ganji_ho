@@ -5,7 +5,7 @@ from customexceptions import *
 from player import Player
 from tree import Node
 from tree import minmax2
-
+from time import time
 
 def is_move_valid(move):
     """
@@ -105,6 +105,7 @@ class Game(object):
         try:
             self.board.place_token(row-1, column-1, self.turn.get_player_color())
         except:
+
             print("--Invalid token placement!--")
             return False
 
@@ -159,15 +160,14 @@ if __name__ == '__main__':
         else:
             p1 = game.turn
             p2 = game.player2 if game.turn == game.player1 else game.player1
-            # print p1
-            # print p2
-
+            t = time()
             tree = Node(None, 2, p1, p2, game.board, 0)
             best_val = minmax2(tree, 2, p1, p2)
+            t = time() - t
 
             if best_val[-1][-1] is None:
                 move = best_val[-1][-2]
-            print best_val
+            print best_val, t
             print "Computer places its tokens on " + move
 
         if not game.make_move(move):

@@ -29,19 +29,21 @@ class Board(object):
         :return: String representing the board
         """
         s = "    "
-        for n in range(len(self.board[0])):
+        for n in xrange(len(self.board[0])):
             s += " " + str(n+1) + " "
         s += "\n"
-        for n in range(len(self.board)):
+        for n in xrange(len(self.board)):
             s += chr(n+65) + "  ["
-            for m in range(len(self.board[n])):
+            for m in xrange(len(self.board[n])):
                 s += " " + str(self.board[n][m]) + " "
             s += "]\n"
 
         return s
 
     def reset_board(self):
-        self.board = [[0] * self.x] * self.y
+        for n in xrange(self.y):
+            l = [0] * self.x
+            self.board.append(l)
 
     def __calculate_moves(self, color):
         """
@@ -54,8 +56,8 @@ class Board(object):
 
         if color is "white":
             # check if any rows have two consecutive vertical moves available
-            for n in range(len(self.board)-1):
-                for m in range(len(self.board[n])):
+            for n in xrange(len(self.board)-1):
+                for m in xrange(len(self.board[n])):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n+1][m] == 0:
@@ -65,8 +67,8 @@ class Board(object):
 
         if color is "black":
             # check if any column ha two consecutive horizontal moves available
-            for n in range(len(self.board)):
-                for m in range(len(self.board[n])-1):
+            for n in xrange(len(self.board)):
+                for m in xrange(len(self.board[n])-1):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n][m+1] == 0:
@@ -90,8 +92,8 @@ class Board(object):
         :rtype: bool
         """
         if color is "white":
-            for n in range(len(self.board)):
-                for m in range(len(self.board[n])):
+            for n in xrange(len(self.board)):
+                for m in xrange(len(self.board[n])):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n+1][m] == 0:
@@ -99,8 +101,8 @@ class Board(object):
                         except:
                             continue
         else:
-            for n in range(len(self.board)):
-                for m in range(len(self.board[n])):
+            for n in xrange(len(self.board)):
+                for m in xrange(len(self.board[n])):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n][m+1] == 0:
