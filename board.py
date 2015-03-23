@@ -20,10 +20,7 @@ class Board(object):
         self.y = y
         self.board = []
         self.reset_board()
-        # self.__moves_available_white = self.__calculate_moves('white')
-        # self.__moves_available_black = self.__calculate_moves('black')
         self.last_move_color = ""
-
 
     def __repr__(self):
         """
@@ -44,7 +41,8 @@ class Board(object):
         return s
 
     def reset_board(self):
-        return [[0 for n in range(self.x)] for m in range(self.y)]
+        self.board = [[0 for n in range(self.x)] for m in range(self.y)]
+        return self.board
 
     def __calculate_moves(self, color):
         """
@@ -81,9 +79,9 @@ class Board(object):
 
     def num_moves_available(self, color):
         if color is 'white':
-            return self.__moves_available_white
+            return self.__calculate_moves('white')
         else:
-            return self.__moves_available_black
+            return self.__calculate_moves('black')
 
     def move_available(self, color):
         """
@@ -93,15 +91,31 @@ class Board(object):
         :rtype: bool
         """
         if color is "white":
-            return self.__moves_available_white >= 1
+            for n in range(len(self.board)):
+                for m in range(len(self.board[n])):
+                    if self.board[n][m] == 0:
+                        try:
+                            if self.board[n+1][m] == 0:
+                                return True
+                        except:
+                            continue
         else:
-            return self.__moves_available_black >= 1
+            for n in range(len(self.board)):
+                for m in range(len(self.board[n])):
+                    if self.board[n][m] == 0:
+                        try:
+                            if self.board[n][m+1] == 0:
+                                return True
+                        except:
+                            continue
+
+        return False
 
     def is_board_terminal(self):
         if self.last_move_color == 'white':
-            return self.__moves_available_black == 0
+            return self.move_available('black')
         else:
-            return self.__moves_available_white == 0
+            return self.move_available('white')
 
     def _is_tile_occupied(self, x, y, color):
         """
@@ -152,39 +166,14 @@ class Board(object):
                 self.board[x][y] = color[0]
                 self.board[x][y+1] = color[0]
 
-            self.__moves_available_white = self.__calculate_moves('white')
-            self.__moves_available_black = self.__calculate_moves('black')
             self.last_move_color = color
 
         except Exception as e:
             raise NotAValidMoveException(e.message)
 
-    def revert_move(self, x, y, color):
-        try:
-            self._is_tile_occupied(x, y, color)
-        except NotAValidMoveException as e:
-            if color is 'white':
-                self.board[x][y] = 0
-                self.board[x+1][y] = 0
-            if color is 'black':
-                self.board[x][y] = 0
-                self.board[x][y+1] = 0
-
-            self.__moves_available_white = self.__calculate_moves('white')
-            self.__moves_available_black = self.__calculate_moves('black')
-            self.last_move_color = color
-
-    def get_board_copy(self):
-        b = []
-        for n in range(len(self.board)):
-            b.append(list(self.board[n]))
-        return b
-
     def __deepcopy__(self, memo):
         b = Board(self.x, self.y)
         b.board = []
         b.board = [row[:] for row in self.board]
-        b.__moves_available_white = self.__moves_available_white
-        b.__moves_available_black = self.__moves_available_black
         b.last_move_color = self.last_move_color
         return b

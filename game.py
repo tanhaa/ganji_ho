@@ -169,8 +169,6 @@ if __name__ == '__main__':
                 move = best_val[-1][-2]
             print best_val
             print "Computer places its tokens on " + move
-            # move = raw_input("player%s, please enter the coordinates for your token placement: "
-            #                  "" % str(game.turn.id))
 
         if not game.make_move(move):
             if game.turn.get_player_type() is "computer":

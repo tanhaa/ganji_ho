@@ -80,7 +80,6 @@ class Node(object):
         # deep copy the board object.
         temp_board = copy.deepcopy(self.board)
         initial_state = [row[:] for row in temp_board.board]
-        # initial_state = copy.deepcopy(temp_board.board)
         list_of_boards = []
         for n in range(len(temp_board.board)):
             for m in range(len(temp_board.board[0])):
