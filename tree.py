@@ -60,7 +60,8 @@ class Node(object):
                 # print(list_of_boards)
                 sub_move = list_of_boards[i]["move"]
                 sub_board = list_of_boards[i]["board"]
-                v = self.calculate_heuristic_value(sub_board)
+                # v = self.calculate_heuristic_value(sub_board)
+                v = 0
                 self.children.append(Node(sub_move, self.depth-1, self.player2, self.player, sub_board, v))
 
     def calculate_heuristic_value(self, board):
@@ -140,7 +141,8 @@ def minmax_white(node, depth, player, player2):
     """
     if depth == 0 or abs(node.value) == maxsize:
         # print str(node.value) + " * " + str(player.get_player_color()) + " for white " + str(node.move)
-        return (node.value, [node.move])
+        # return (node.value, [node.move])
+        return (node.calculate_heuristic_value(node.board), [node.move])
     max_val = (-maxsize, [node.move])
     # print "Setting max_val to " + str(max_val)
     for child in node.children:
@@ -171,7 +173,8 @@ def minmax_black(node, depth, player, player2):
     """
     if depth == 0 or abs(node.value) == maxsize:
         # print str(node.value) + " * " + str(player.get_player_color()) + " for black " + str(node.move)
-        return (node.value, [node.move])
+        # return (node.value, [node.move])
+        return (node.calculate_heuristic_value(node.board), [node.move])
     min_val = (maxsize, [node.move])
     # print "Setting min_val to " + str(min_val) + " " + str(len(min_val[1]))
     for child in node.children:
