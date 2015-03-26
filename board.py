@@ -92,7 +92,7 @@ class Board(object):
         :rtype: bool
         """
         if color is "white":
-            for n in xrange(len(self.board)):
+            for n in xrange(len(self.board)-1):
                 for m in xrange(len(self.board[n])):
                     if self.board[n][m] == 0:
                         try:
@@ -102,7 +102,7 @@ class Board(object):
                             continue
         else:
             for n in xrange(len(self.board)):
-                for m in xrange(len(self.board[n])):
+                for m in xrange(len(self.board[n])-1):
                     if self.board[n][m] == 0:
                         try:
                             if self.board[n][m+1] == 0:

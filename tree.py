@@ -32,7 +32,6 @@ def convert_to_alphamove(n, m):
 
 class Node(object):
     def __init__(self, move, depth, player1, player2, board, value):
-        self.best_move = ""
         self.move = move
         self.depth = depth
         self.player = player1
