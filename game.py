@@ -27,7 +27,7 @@ def is_move_valid(move):
 
 class Game(object):
 
-    def __init__(self, mode, board_size_x, board_size_y):
+    def __init__(self, mode, board_size_x, board_size_y, comp_color):
         """
         This method initializes the game with the given mode, automatic or manual. If the mode is manual, it creates
         two human players, player1 is assigned white and player2 is assigned black.  If the mode is automatic, it
@@ -49,15 +49,18 @@ class Game(object):
         if mode is 1:
             self.player1 = Player(1, 'human', 'white')
             self.player2 = Player(2, 'human', 'black')
-            self.turn = self.player1
 
         # TODO: Randomize the player color selection for automatic mode
         # TODO: Assign whose_turn to the white player after randomizing
         if mode is 2:
-            self.player1 = Player(1, 'human', 'white')
-            self.player2 = Player(2, 'computer', 'black')
-            self.turn = self.player1
+            if comp_color is 'b':
+                self.player1 = Player(1, 'human', 'white')
+                self.player2 = Player(2, 'computer', 'black')
+            else:
+                self.player1 = Player(1, 'computer', 'white')
+                self.player2 = Player(2, 'human', 'black')
 
+        self.turn = self.player1
         self.board = Board(board_size_x, board_size_y)
         self.is_game_over = False
         self.winner = None
@@ -132,6 +135,9 @@ if __name__ == '__main__':
         raise NotAValidSelectionException("You crashed the program!! You must "
                                           "enter a number (1 or 2) as your selection")
 
+    if selected_mode is 2:
+        comp_color = raw_input("Please enter the color for computer('b' for black and 'w' for white: ")
+
     # ========================#
     # Get Board Size          #
     # ========================#
@@ -145,7 +151,7 @@ if __name__ == '__main__':
     # ========================#
     # Start Game              #
     # ========================#
-    game = Game(selected_mode, board_rows, board_columns)
+    game = Game(selected_mode, board_rows, board_columns, comp_color)
 
     # ========================#
     # Get Turns (Play game)   #
