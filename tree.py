@@ -72,11 +72,6 @@ class Node(object):
             else:
                 return -maxsize
 
-        # if board.is_board_terminal():
-        #     return maxsize if self.player.get_player_color() == 'white' else -maxsize
-        # else:
-        #     return board.num_moves_available('white') - board.num_moves_available('black')
-
     def generate(self, color):
         """
 
@@ -92,6 +87,11 @@ class Node(object):
         if color is 'white':
             for n in range(len(temp_board.board) - 1):
                 for m in range(len(temp_board.board[0])):
+                    try:
+                        temp_board._is_tile_occupied(n, m, color)
+                    except:
+                        continue
+
                     # temp_board.board = copy.deepcopy(initial_state)
                     temp_board.board = [row[:] for row in initial_state]
                     try:
@@ -107,6 +107,10 @@ class Node(object):
             for n in range(len(temp_board.board)):
                 for m in range(len(temp_board.board[0]) - 1):
                     # temp_board.board = copy.deepcopy(initial_state)
+                    try:
+                        temp_board._is_tile_occupied(n, m, color)
+                    except:
+                        continue
                     temp_board.board = [row[:] for row in initial_state]
                     try:
                         temp_board.place_token(n, m, color)

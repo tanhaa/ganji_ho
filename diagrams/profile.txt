@@ -391,3 +391,71 @@ Minmax Time took:  0.180999994278
    149576    0.023    0.000    0.023    0.000 {method 'upper' of 'str' objects}
    119401    0.036    0.000    0.036    0.000 {range}
         4    0.000    0.000    0.000    0.000 {time.time}
+
+======================================================================
+Latest time:
+Tree Time took:  4.40700006485
+(0, ['B3', 'A2', None])
+Minmax Time took:  0.119999885559
+         2691938 function calls (2519240 primitive calls) in 4.531 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    4.531    4.531 <input>:14(expensive_function)
+        1    0.000    0.000    0.001    0.001 board.py:1(<module>)
+   182768    0.137    0.000    0.137    0.000 board.py:115(_is_tile_occupied)
+    85496    0.111    0.000    0.160    0.000 board.py:137(place_token)
+    87233    0.596    0.000    1.305    0.000 board.py:169(__deepcopy__)
+    87234    0.515    0.000    0.587    0.000 board.py:43(reset_board)
+     3360    0.102    0.000    0.105    0.000 board.py:48(__calculate_moves)
+        1    0.000    0.000    0.000    0.000 board.py:7(Board)
+     3360    0.002    0.000    0.107    0.000 board.py:81(num_moves_available)
+     1680    0.004    0.000    0.004    0.000 board.py:87(move_available)
+    87234    0.123    0.000    0.710    0.000 board.py:9(__init__)
+    87233    0.339    0.000    2.087    0.000 copy.py:145(deepcopy)
+    87233    0.335    0.000    0.354    0.000 copy.py:267(_keep_alive)
+        1    0.000    0.000    0.000    0.000 copy.py:366(_EmptyClass)
+        1    0.000    0.000    0.001    0.001 copy.py:49(<module>)
+        1    0.000    0.000    0.000    0.000 copy.py:55(Error)
+        1    0.000    0.000    0.000    0.000 customexceptions.py:1(<module>)
+        1    0.000    0.000    0.000    0.000 customexceptions.py:12(NotAValidSelectionException)
+        1    0.000    0.000    0.000    0.000 customexceptions.py:16(NotAValidPlayerTypeException)
+        1    0.000    0.000    0.000    0.000 customexceptions.py:20(NotAValidTokenColorException)
+        1    0.000    0.000    0.000    0.000 customexceptions.py:24(NotAValidModeException)
+        1    0.000    0.000    0.000    0.000 customexceptions.py:4(NotATileException)
+        1    0.000    0.000    0.000    0.000 customexceptions.py:8(NotAValidMoveException)
+        1    0.000    0.000    0.000    0.000 player.py:1(<module>)
+     3418    0.001    0.000    0.001    0.000 player.py:41(get_player_color)
+        1    0.000    0.000    0.000    0.000 player.py:6(Player)
+        2    0.000    0.000    0.000    0.000 player.py:8(__init__)
+     18/5    0.000    0.000    0.004    0.001 pydev_import_hook.py:16(do_import)
+        1    0.000    0.000    0.120    0.120 tree.py:142(minmax2)
+   1681/1    0.003    0.000    0.120    0.120 tree.py:160(minmax_white)
+       56    0.002    0.000    0.120    0.002 tree.py:192(minmax_black)
+        1    0.000    0.000    0.001    0.001 tree.py:22(<module>)
+    85496    0.126    0.000    0.169    0.000 tree.py:26(convert_to_alphamove)
+        1    0.000    0.000    0.000    0.000 tree.py:33(Node)
+  85497/1    0.181    0.000    4.407    4.407 tree.py:34(__init__)
+  85497/1    0.274    0.000    4.407    4.407 tree.py:44(create_children)
+     1680    0.004    0.000    0.115    0.000 tree.py:66(calculate_heuristic_value)
+     1737    1.412    0.001    3.938    0.002 tree.py:75(generate)
+        1    0.000    0.000    0.000    0.000 weakref.py:211(KeyedRef)
+        1    0.000    0.000    0.000    0.000 weakref.py:232(WeakKeyDictionary)
+        1    0.000    0.000    0.000    0.000 weakref.py:35(WeakValueDictionary)
+        1    0.000    0.000    0.000    0.000 weakref.py:6(<module>)
+     18/5    0.004    0.000    0.004    0.001 {__import__}
+       57    0.000    0.000    0.000    0.000 {abs}
+    85496    0.027    0.000    0.027    0.000 {chr}
+    87236    0.018    0.000    0.018    0.000 {getattr}
+   261699    0.031    0.000    0.031    0.000 {id}
+    87233    0.028    0.000    0.028    0.000 {issubclass}
+    47609    0.005    0.000    0.005    0.000 {len}
+   868995    0.095    0.000    0.095    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+   174466    0.030    0.000    0.030    0.000 {method 'get' of 'dict' objects}
+        4    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+    85496    0.015    0.000    0.015    0.000 {method 'upper' of 'str' objects}
+    15689    0.009    0.000    0.009    0.000 {range}
+        4    0.000    0.000    0.000    0.000 {time.time}
+
