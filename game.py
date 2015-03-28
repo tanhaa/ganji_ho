@@ -5,7 +5,7 @@ from customexceptions import *
 from player import Player
 from tree import Node
 from tree import minmax2
-
+from time import time
 
 def is_move_valid(move):
     """
@@ -27,7 +27,7 @@ def is_move_valid(move):
 
 class Game(object):
 
-    def __init__(self, mode, board_size_x, board_size_y):
+    def __init__(self, mode, board_size_x, board_size_y, comp_color):
         """
         This method initializes the game with the given mode, automatic or manual. If the mode is manual, it creates
         two human players, player1 is assigned white and player2 is assigned black.  If the mode is automatic, it
@@ -49,15 +49,18 @@ class Game(object):
         if mode is 1:
             self.player1 = Player(1, 'human', 'white')
             self.player2 = Player(2, 'human', 'black')
-            self.turn = self.player1
 
         # TODO: Randomize the player color selection for automatic mode
         # TODO: Assign whose_turn to the white player after randomizing
         if mode is 2:
-            self.player1 = Player(1, 'human', 'white')
-            self.player2 = Player(2, 'computer', 'black')
-            self.turn = self.player1
+            if comp_color == 'b':
+                self.player1 = Player(1, 'human', 'white')
+                self.player2 = Player(2, 'computer', 'black')
+            else:
+                self.player1 = Player(1, 'computer', 'white')
+                self.player2 = Player(2, 'human', 'black')
 
+        self.turn = self.player1
         self.board = Board(board_size_x, board_size_y)
         self.is_game_over = False
         self.winner = None
@@ -105,6 +108,7 @@ class Game(object):
         try:
             self.board.place_token(row-1, column-1, self.turn.get_player_color())
         except:
+
             print("--Invalid token placement!--")
             return False
 
@@ -131,6 +135,9 @@ if __name__ == '__main__':
         raise NotAValidSelectionException("You crashed the program!! You must "
                                           "enter a number (1 or 2) as your selection")
 
+    if selected_mode is 2:
+        comp_color = raw_input("Please enter the color for computer('b' for black and 'w' for white: ")
+
     # ========================#
     # Get Board Size          #
     # ========================#
@@ -144,7 +151,7 @@ if __name__ == '__main__':
     # ========================#
     # Start Game              #
     # ========================#
-    game = Game(selected_mode, board_rows, board_columns)
+    game = Game(selected_mode, board_rows, board_columns, comp_color)
 
     # ========================#
     # Get Turns (Play game)   #
@@ -159,15 +166,14 @@ if __name__ == '__main__':
         else:
             p1 = game.turn
             p2 = game.player2 if game.turn == game.player1 else game.player1
-            # print p1
-            # print p2
-
+            t = time()
             tree = Node(None, 2, p1, p2, game.board, 0)
             best_val = minmax2(tree, 2, p1, p2)
+            t = time() - t
 
             if best_val[-1][-1] is None:
                 move = best_val[-1][-2]
-            print best_val
+            print best_val, t
             print "Computer places its tokens on " + move
 
         if not game.make_move(move):

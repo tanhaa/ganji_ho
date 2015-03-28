@@ -32,7 +32,6 @@ def convert_to_alphamove(n, m):
 
 class Node(object):
     def __init__(self, move, depth, player1, player2, board, value):
-        self.best_move = ""
         self.move = move
         self.depth = depth
         self.player = player1
@@ -65,10 +64,13 @@ class Node(object):
                 self.children.append(Node(sub_move, self.depth-1, self.player2, self.player, sub_board, v))
 
     def calculate_heuristic_value(self, board):
-        if board.is_board_terminal():
-            return maxsize if self.player.get_player_color() == 'white' else -maxsize
-        else:
+        if self.board.move_available(self.player2.get_player_color()):
             return board.num_moves_available('white') - board.num_moves_available('black')
+        else:
+            if self.player.get_player_color() == 'white':
+                return maxsize
+            else:
+                return -maxsize
 
     def generate(self, color):
         """
@@ -82,10 +84,14 @@ class Node(object):
         initial_state = []
         initial_state.extend(temp_board.board)
         list_of_boards = []
-
         if color is 'white':
             for n in range(temp_board.x - 1):
                 for m in range(temp_board.y):
+                    try:
+                        temp_board._is_tile_occupied(n, m, color)
+                    except:
+                        continue
+
                     temp_board.board = initial_state[:]
                     try:
                         temp_board.place_token(n, m, color)
@@ -98,6 +104,10 @@ class Node(object):
         else:
             for n in range(temp_board.x):
                 for m in range(temp_board.y - 1):
+                    try:
+                        temp_board._is_tile_occupied(n, m, color)
+                    except:
+                        continue
                     temp_board.board = initial_state[:]
                     try:
                         temp_board.place_token(n, m, color)
