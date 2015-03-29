@@ -6,6 +6,7 @@ from player import Player
 from tree import Node
 from tree import minmax2
 from time import time
+from tree import convert_to_alphamove
 
 def is_move_valid(move):
     """
@@ -154,6 +155,29 @@ if __name__ == '__main__':
     game = Game(selected_mode, board_rows, board_columns, comp_color)
 
     # ========================#
+    # Generate moves          #
+    # ========================#
+    if selected_mode is 2:
+        available_moves = []
+        if comp_color == 'b':
+            # everything in the second row:
+            for m in range(board_columns - 1):
+                if (m % 2) != 0:
+                    continue
+                available_moves.append((convert_to_alphamove((board_rows / board_rows), m)))
+                available_moves.append((convert_to_alphamove(board_rows - 2, m)))
+        else:
+            # for white we are taking rows
+            for n in range(board_rows - 1):
+                if (n % 2) != 0:
+                    continue
+                available_moves.append((convert_to_alphamove((n), board_columns/board_columns)))
+                available_moves.append((convert_to_alphamove((n), board_columns - 2)))
+
+    # reverse the list, so we can pop
+    available_moves.reverse()
+
+    # ========================#
     # Get Turns (Play game)   #
     # ========================#
 
@@ -167,13 +191,32 @@ if __name__ == '__main__':
             p1 = game.turn
             p2 = game.player2 if game.turn == game.player1 else game.player1
             t = time()
-            tree = Node(None, 2, p1, p2, game.board, 0)
-            best_val = minmax2(tree, 2, p1, p2)
-            t = time() - t
 
-            if best_val[-1][-1] is None:
-                move = best_val[-1][-2]
-            print best_val, t
+            if len(available_moves) == 0:
+                tree = Node(None, 2, p1, p2, game.board, 0)
+                best_val = minmax2(tree, 2, p1, p2)
+                t = time() - t
+                if best_val[-1][-1] is None:
+                    move = best_val[-1][-2]
+                print best_val, t
+            else:
+                move = available_moves.pop()
+                print str(move)
+                valid = False
+                while not valid:
+                    try:
+                        row = ord(move[0].lower()) - 96 - 1
+                        column = int(move[1]) - 1
+                        print row, column
+                        game.board._is_tile_occupied(row, column, p1.get_player_color())
+                        valid = True
+                        print valid
+                    except:
+                        valid = False
+                        move = available_moves.pop()
+                        print "got a new move", str(move)
+
+            print move
             print "Computer places its tokens on " + move
 
         if not game.make_move(move):
