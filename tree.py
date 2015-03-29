@@ -32,7 +32,6 @@ def convert_to_alphamove(n, m):
 
 class Node(object):
     def __init__(self, move, depth, player1, player2, board, value):
-        self.best_move = ""
         self.move = move
         self.depth = depth
         self.player = player1
@@ -47,7 +46,6 @@ class Node(object):
         if self.depth >= 0:
             # generate the list of boards
             list_of_boards = self.generate(self.player.get_player_color())
-
             # ====Debug====
             # list_of_moves = []
             # for i in range(len(list_of_boards)):
@@ -61,14 +59,18 @@ class Node(object):
                 # print(list_of_boards)
                 sub_move = list_of_boards[i]["move"]
                 sub_board = list_of_boards[i]["board"]
-                v = self.calculate_heuristic_value(sub_board)
+                # v = self.calculate_heuristic_value(sub_board)
+                v = 0
                 self.children.append(Node(sub_move, self.depth-1, self.player2, self.player, sub_board, v))
 
     def calculate_heuristic_value(self, board):
-        if board.is_board_terminal():
-            return maxsize if self.player.get_player_color() == 'white' else -maxsize
-        else:
+        if self.board.move_available(self.player2.get_player_color()):
             return board.num_moves_available('white') - board.num_moves_available('black')
+        else:
+            if self.player.get_player_color() == 'white':
+                return maxsize
+            else:
+                return -maxsize
 
     def generate(self, color):
         """
@@ -82,16 +84,38 @@ class Node(object):
         initial_state = []
         initial_state.extend(temp_board.board)
         list_of_boards = []
-        for n in range(temp_board.x):
-            for m in range(temp_board.y):
-                temp_board.board = initial_state[:]
-                try:
-                    temp_board.place_token(n, m, color)
-                    move = convert_to_alphamove(n, m)
-                    list_of_boards.append({"move": move, "board": copy.deepcopy(temp_board)})
-                except:
-                    if not temp_board.move_available(color):
-                        break
+        if color is 'white':
+            for n in range(temp_board.x - 1):
+                for m in range(temp_board.y):
+                    try:
+                        temp_board._is_tile_occupied(n, m, color)
+                    except:
+                        continue
+
+                    temp_board.board = initial_state[:]
+                    try:
+                        temp_board.place_token(n, m, color)
+                        move = convert_to_alphamove(n, m)
+                        list_of_boards.append({"move": move, "board": copy.deepcopy(temp_board)})
+                    except:
+                        if not temp_board.move_available(color):
+                            break
+                    continue
+        else:
+            for n in range(temp_board.x):
+                for m in range(temp_board.y - 1):
+                    try:
+                        temp_board._is_tile_occupied(n, m, color)
+                    except:
+                        continue
+                    temp_board.board = initial_state[:]
+                    try:
+                        temp_board.place_token(n, m, color)
+                        move = convert_to_alphamove(n, m)
+                        list_of_boards.append({"move": move, "board": copy.deepcopy(temp_board)})
+                    except:
+                        if not temp_board.move_available(color):
+                            break
                     continue
         return list_of_boards
 
@@ -139,7 +163,8 @@ def minmax_white(node, depth, player, player2):
     """
     if depth == 0 or abs(node.value) == maxsize:
         # print str(node.value) + " * " + str(player.get_player_color()) + " for white " + str(node.move)
-        return (node.value, [node.move])
+        # return (node.value, [node.move])
+        return (node.calculate_heuristic_value(node.board), [node.move])
     max_val = (-maxsize, [node.move])
     # print "Setting max_val to " + str(max_val)
     for child in node.children:
@@ -170,7 +195,8 @@ def minmax_black(node, depth, player, player2):
     """
     if depth == 0 or abs(node.value) == maxsize:
         # print str(node.value) + " * " + str(player.get_player_color()) + " for black " + str(node.move)
-        return (node.value, [node.move])
+        # return (node.value, [node.move])
+        return (node.calculate_heuristic_value(node.board), [node.move])
     min_val = (maxsize, [node.move])
     # print "Setting min_val to " + str(min_val) + " " + str(len(min_val[1]))
     for child in node.children:
